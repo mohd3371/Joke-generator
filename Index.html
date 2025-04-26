@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مولّد النكت العجيب</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full text-center">
+        <h1 class="text-2xl font-bold text-blue-600 mb-4">🎉 مولّد النكت العجيب</h1>
+        <div id="joke" class="text-lg mb-4 p-4 bg-blue-50 rounded-lg"></div>
+        
+        <div id="rating-buttons" class="mb-4 flex justify-center gap-2">
+            <button onclick="rateJoke('مضحكة')" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">مضحكة 😄</button>
+            <button onclick="rateJoke('عادية')" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">عادية 😐</button>
+            <button onclick="rateJoke('مو مضحكة')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">مو مضحكة 😕</button>
+        </div>
+        
+        <button onclick="getJoke()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-4">نكتة جديدة 🚀</button>
+        
+        <div id="stats" class="text-sm">
+            <p>📊 الإحصائيات:</p>
+            <p>مضحكة: <span id="funny">0</span></p>
+            <p>عادية: <span id="normal">0</span></p>
+            <p>مو مضحكة: <span id="not_funny">0</span></p>
+        </div>
+        
+        <a id="share" href="#" target="_blank" class="inline-block mt-4 text-blue-500 hover:underline">شارك إحصائياتك على X! 📱</a>
+    </div>
+
+    <script>
+        const jokes = [
+            "ليه الطماطس دايمًا مرتبكة؟ لأنها ما تعرف إذا هي خضار ولا فاكهة!",
+            "إيش قال القلم للورقة؟ أنتِ دايمًا تحتي!",
+            "ليه الدجاجة عبرت الشارع؟ عشان توصل الجهة الثانية، ههه!",
+            "إيش اسم أبطأ حيوان؟ السلحفاة، بس لو عجل شوي بيصير صاروخ!",
+            "ليه الكمبيوتر يغني؟ لأنه عنده بطاقة صوت!"
+        ];
+
+        let funny = 0, normal = 0, not_funny = 0;
+
+        function getJoke() {
+            const jokeElement = document.getElementById('joke');
+            jokeElement.innerText = jokes[Math.floor(Math.random() * jokes.length)];
+            jokeElement.classList.add('fade-in');
+            setTimeout(() => jokeElement.classList.remove('fade-in'), 500);
+            document.getElementById('rating-buttons').style.display = 'flex';
+        }
+
+        function rateJoke(rating) {
+            if (rating === 'مضحكة') funny++;
+            else if (rating === 'عادية') normal++;
+            else if (rating === 'مو مضحكة') not_funny++;
+
+            updateStats();
+            updateShareLink();
+            document.getElementById('rating-buttons').style.display = 'none';
+        }
+
+        function updateStats() {
+            document.getElementById('funny').innerText = funny;
+            document.getElementById('normal').innerText = normal;
+            document.getElementById('not_funny').innerText = not_funny;
+        }
+
+        function updateShareLink() {
+            const total = funny + normal + not_funny;
+            const shareText = encodeURIComponent(
+                `ضحكت على ${funny} نكتة، ${normal} كانت عادية، و${not_funny} مو مضحكة! جرب مولّد النكت العجيب! 😄 #نكت`
+            );
+            document.getElementById('share').href = `https://twitter.com/intent/tweet?text=${shareText}`;
+        }
+
+        // عرض نكتة أولية عند تحميل الصفحة
+        getJoke();
+    </script>
+</body>
+</html>
